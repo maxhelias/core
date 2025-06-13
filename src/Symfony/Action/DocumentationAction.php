@@ -28,6 +28,7 @@ use ApiPlatform\State\ProviderInterface;
 use Negotiation\Negotiator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Generates the API documentation.
@@ -47,7 +48,7 @@ final class DocumentationAction
         private readonly ?ProviderInterface $provider = null,
         private readonly ?ProcessorInterface $processor = null,
         ?Negotiator $negotiator = null,
-        private readonly array $documentationFormats = [OpenApiNormalizer::JSON_FORMAT => ['application/vnd.openapi+json'], OpenApiNormalizer::FORMAT => ['application/json']],
+        private readonly array $documentationFormats = [OpenApiNormalizer::JSON_FORMAT => ['application/vnd.openapi+json']],
     ) {
         $this->negotiator = $negotiator ?? new Negotiator();
     }
@@ -71,7 +72,7 @@ final class DocumentationAction
         $this->addRequestFormats($request, $this->documentationFormats);
         $format = $this->getRequestFormat($request, $this->documentationFormats);
 
-        if (null !== $this->openApiFactory && ('html' === $format || OpenApiNormalizer::FORMAT === $format || OpenApiNormalizer::JSON_FORMAT === $format || OpenApiNormalizer::YAML_FORMAT === $format)) {
+        if (null !== $this->openApiFactory && ('html' === $format || OpenApiNormalizer::JSON_FORMAT === $format || OpenApiNormalizer::YAML_FORMAT === $format)) {
             return $this->getOpenApiDocumentation($context, $format, $request);
         }
 
@@ -97,7 +98,7 @@ final class DocumentationAction
                 $operation = $operation->withProcessor('api_platform.swagger_ui.processor')->withWrite(true);
             }
             if ('json' === $format) {
-                trigger_deprecation('api-platform/core', '3.2', 'The "json" format is too broad, use "jsonopenapi" instead.');
+                throw new NotFoundHttpException('The "json" format is too broad, use "jsonopenapi" instead.');
             }
 
             return $this->processor->process($this->provider->provide($operation, [], $context), $operation, [], $context);

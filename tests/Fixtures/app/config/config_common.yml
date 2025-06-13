@@ -47,7 +47,6 @@ api_platform:
         multipart:                     ['multipart/form-data']
     docs_formats:
         html:                          ['text/html']
-        json:                          ['application/json']
         jsonopenapi:                   ['application/vnd.openapi+json']
         yamlopenapi:                   ['application/vnd.openapi+yaml']
         jsonld:                        ['application/ld+json']

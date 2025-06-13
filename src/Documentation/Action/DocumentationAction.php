@@ -49,7 +49,7 @@ final class DocumentationAction
         private readonly ?ProviderInterface $provider = null,
         private readonly ?ProcessorInterface $processor = null,
         ?Negotiator $negotiator = null,
-        private readonly array $documentationFormats = [OpenApiNormalizer::JSON_FORMAT => ['application/vnd.openapi+json'], OpenApiNormalizer::FORMAT => ['application/json']],
+        private readonly array $documentationFormats = [OpenApiNormalizer::JSON_FORMAT => ['application/vnd.openapi+json']],
     ) {
         $this->negotiator = $negotiator ?? new Negotiator();
     }
@@ -71,7 +71,7 @@ final class DocumentationAction
         $request->attributes->set('_api_normalization_context', $request->attributes->get('_api_normalization_context', []) + $context);
         $format = $this->getRequestFormat($request, $this->documentationFormats);
 
-        if (null !== $this->openApiFactory && ('html' === $format || OpenApiNormalizer::FORMAT === $format || OpenApiNormalizer::JSON_FORMAT === $format || OpenApiNormalizer::YAML_FORMAT === $format)) {
+        if (null !== $this->openApiFactory && ('html' === $format || OpenApiNormalizer::JSON_FORMAT === $format || OpenApiNormalizer::YAML_FORMAT === $format)) {
             return $this->getOpenApiDocumentation($context, $format, $request);
         }
 

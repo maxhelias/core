@@ -51,7 +51,7 @@ final class DocumentationController
         private readonly ?ProviderInterface $provider = null,
         private readonly ?ProcessorInterface $processor = null,
         ?Negotiator $negotiator = null,
-        private readonly array $documentationFormats = [OpenApiNormalizer::JSON_FORMAT => ['application/vnd.openapi+json'], OpenApiNormalizer::FORMAT => ['application/json']],
+        private readonly array $documentationFormats = [OpenApiNormalizer::JSON_FORMAT => ['application/vnd.openapi+json']],
         private readonly bool $swaggerUiEnabled = true,
     ) {
         $this->negotiator = $negotiator ?? new Negotiator();
@@ -69,7 +69,7 @@ final class DocumentationController
         $this->addRequestFormats($request, $this->documentationFormats);
         $format = $this->getRequestFormat($request, $this->documentationFormats);
 
-        if ('html' === $format || OpenApiNormalizer::FORMAT === $format || OpenApiNormalizer::JSON_FORMAT === $format || OpenApiNormalizer::YAML_FORMAT === $format) {
+        if ('html' === $format || OpenApiNormalizer::JSON_FORMAT === $format || OpenApiNormalizer::YAML_FORMAT === $format) {
             return $this->getOpenApiDocumentation($context, $format, $request);
         }
 

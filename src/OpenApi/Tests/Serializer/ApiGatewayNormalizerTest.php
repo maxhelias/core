@@ -340,13 +340,13 @@ final class ApiGatewayNormalizerTest extends TestCase
 
         $documentation = $this->getOpenApi();
         $normalizerProphecy = $this->prophesize(NormalizerInterface::class);
-        $normalizerProphecy->normalize($documentation, OpenApiNormalizer::FORMAT, [
+        $normalizerProphecy->normalize($documentation, OpenApiNormalizer::JSON_FORMAT, [
             ApiGatewayNormalizer::API_GATEWAY => true,
         ])->willReturn($swaggerDocument);
 
         $normalizer = new ApiGatewayNormalizer($normalizerProphecy->reveal());
 
-        $this->assertEquals($modifiedSwaggerDocument, $normalizer->normalize($documentation, OpenApiNormalizer::FORMAT, [
+        $this->assertEquals($modifiedSwaggerDocument, $normalizer->normalize($documentation, OpenApiNormalizer::JSON_FORMAT, [
             ApiGatewayNormalizer::API_GATEWAY => true,
         ]));
     }
@@ -515,11 +515,11 @@ final class ApiGatewayNormalizerTest extends TestCase
         ];
 
         $normalizerProphecy = $this->prophesize(NormalizerInterface::class);
-        $normalizerProphecy->normalize($documentation, OpenApiNormalizer::FORMAT, Argument::type('array'))->willReturn($swaggerDocument);
+        $normalizerProphecy->normalize($documentation, OpenApiNormalizer::JSON_FORMAT, Argument::type('array'))->willReturn($swaggerDocument);
 
         $normalizer = new ApiGatewayNormalizer($normalizerProphecy->reveal());
 
-        $this->assertEquals($swaggerDocument, $normalizer->normalize($documentation, OpenApiNormalizer::FORMAT));
+        $this->assertEquals($swaggerDocument, $normalizer->normalize($documentation, OpenApiNormalizer::JSON_FORMAT));
     }
 
     private function getOpenApi(): OpenApi

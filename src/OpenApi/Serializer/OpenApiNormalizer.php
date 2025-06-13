@@ -24,7 +24,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class OpenApiNormalizer implements NormalizerInterface
 {
-    public const FORMAT = 'json';
     public const JSON_FORMAT = 'jsonopenapi';
     public const YAML_FORMAT = 'yamlopenapi';
     private const EXTENSION_PROPERTIES_KEY = 'extensionProperties';
@@ -73,12 +72,12 @@ final class OpenApiNormalizer implements NormalizerInterface
      */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return (self::FORMAT === $format || self::JSON_FORMAT === $format || self::YAML_FORMAT === $format) && $data instanceof OpenApi;
+        return (self::JSON_FORMAT === $format || self::YAML_FORMAT === $format) && $data instanceof OpenApi;
     }
 
     public function getSupportedTypes($format): array
     {
-        return (self::FORMAT === $format || self::JSON_FORMAT === $format || self::YAML_FORMAT === $format) ? [OpenApi::class => true] : [];
+        return (self::JSON_FORMAT === $format || self::YAML_FORMAT === $format) ? [OpenApi::class => true] : [];
     }
 
     private function getPathsCallBack(): \Closure
